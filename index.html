@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRKT Sniper Control</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #17212b);
+            color: var(--tg-theme-text-color, #ffffff);
+            padding: 16px;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .card {
+            background-color: var(--tg-theme-secondary-bg-color, #232e3c);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        h2 { font-size: 16px; margin: 0 0 12px 0; color: #5288c1; }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        input[type="number"] {
+            width: 70px;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #3e4e61;
+            background: var(--tg-theme-bg-color, #17212b);
+            color: #fff;
+            text-align: center;
+            font-weight: bold;
+        }
+        .collection-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .collection-item:last-child { border-bottom: none; }
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background-color: var(--tg-theme-button-color, #5288c1);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .badge {
+            background: #2b394a;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #8fa3b8;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>📊 Фильтр Цены</h2>
+        <div class="row">
+            <span>Макс. флор (+%):</span>
+            <input type="number" id="multiplier" step="0.01" value="1.02">
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>🎯 Активные Совпадения</h2>
+        <div id="collections-list">
+            <div style="text-align:center; color: #8fa3b8;">Загрузка списка из базы...</div>
+        </div>
+    </div>
+
+    <button id="saveBtn">Сохранить и Применить</button>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+
+        // Статичная демо-выгрузка если сервер не подключен
+        const defaultMatches = {
+            "Signet Ring": ["Gold", "Silver", "Onyx"],
+            "Spotted Dog": ["Dalmatian", "Gold"],
+            "Plush Pepe": ["Classic", "Dark"]
+        };
+
+        function renderList(data) {
+            const container = document.getElementById('collections-list');
+            container.innerHTML = '';
+            
+            for (const [coll, value] of Object.entries(data)) {
+                const div = document.createElement('div');
+                div.className = 'collection-item';
+                div.innerHTML = `
+                    <div>
+                        <strong>${coll}</strong>
+                        <div class="badge">${Array.isArray(value['*']) ? value['*'].length + ' фонов' : 'Включено'}</div>
+                    </div>
+                    <input type="checkbox" checked data-coll="${coll}" style="transform: scale(1.3);">
+                `;
+                container.appendChild(div);
+            }
+        }
+
+        // Рендерим стартовый список
+        renderList(defaultMatches);
+
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const multiplier = parseFloat(document.getElementById('multiplier').value);
+            
+            const selectedCollections = [];
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                selectedCollections.push(cb.getAttribute('data-coll'));
+            });
+
+            const data = {
+                max_multiplier: multiplier,
+                active_collections: selectedCollections
+            };
+
+            // Отправляем обратно в Telegram Bot
+            tg.sendData(JSON.stringify(data));
+        });
+    </script>
+</body>
+</html>
