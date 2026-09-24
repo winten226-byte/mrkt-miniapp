@@ -8,9 +8,6 @@
   <title>MRKT Sniper Control</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/recharts@2.12.7/umd/Recharts.js"></script>
 
   <style>
     :root {
@@ -810,19 +807,6 @@
       <div class="stat-label">Офферы</div>
     </div>
 
-  </div>
-
-  <!-- P&L CHART -->
-  <div class="section">
-    <div class="section-title">
-      <span>📊 Прибыль по месяцам</span>
-      <span id="pnlTotal">—</span>
-    </div>
-    <div class="card" style="padding: 12px;">
-      <div id="pnlChart" style="width: 100%; height: 260px;">
-        <div style="text-align:center; padding:40px; color:var(--muted);">Загрузка...</div>
-      </div>
-    </div>
   </div>
 
 
@@ -2108,70 +2092,6 @@
       );
 
     });
-
-  /* =========================
-    P&L CHART
-  ========================= */
-  const PNL_API = "https://phrasing-chaos-hundredth.ngrok-free.dev";
-
-  const telegramId = tg.initDataUnsafe?.user?.id || null;
-
-  async function loadPnlChart() {
-    const container = el("pnlChart");
-    if (!telegramId) {
-      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);">Нет Telegram ID</div>';
-      return;
-    }
-    try {
-      const res = await fetch(`${PNL_API}/api/pnl?telegram_id=${telegramId}`);
-      const data = await res.json();
-      if (!data.months || !data.months.length) {
-        container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);">Нет данных</div>';
-        return;
-      }
-      renderPnlChart(container, data.months);
-    } catch (e) {
-      console.error(e);
-      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--red);">Ошибка загрузки</div>';
-    }
-  }
-
-  function renderPnlChart(container, months) {
-    const { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Cell } = Recharts;
-
-    const total = months.reduce((s, m) => s + m.profit_ton, 0);
-    el("pnlTotal").textContent = (total >= 0 ? "+" : "") + total.toFixed(2) + " TON";
-
-    const data = months.map(m => ({
-      month: m.month,
-      profit: parseFloat(m.profit_ton.toFixed(2)),
-    }));
-
-    const chart = React.createElement(
-      ResponsiveContainer,
-      { width: "100%", height: 260 },
-      React.createElement(
-        BarChart,
-        { data, margin: { top: 10, right: 10, left: -10, bottom: 0 } },
-        React.createElement(CartesianGrid, { strokeDasharray: "3 3", stroke: "rgba(255,255,255,0.05)" }),
-        React.createElement(XAxis, { dataKey: "month", stroke: "#8f97a7", fontSize: 10, tickLine: false }),
-        React.createElement(YAxis, { stroke: "#8f97a7", fontSize: 10, tickLine: false, tickFormatter: v => v + " T" }),
-        React.createElement(Tooltip, {
-          contentStyle: { background: "#1f242f", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 10, fontSize: 12, color: "#fff" },
-          formatter: v => [(v >= 0 ? "+" : "") + v + " TON", "Прибыль"],
-        }),
-        React.createElement(
-          Bar,
-          { dataKey: "profit", radius: [6, 6, 0, 0] },
-          data.map((e, i) => React.createElement(Cell, { key: i, fill: e.profit >= 0 ? "#2ecc71" : "#ff5c68" }))
-        )
-      )
-    );
-
-    ReactDOM.render(chart, container);
-  }
-
-  loadPnlChart();
 
 </script>
 
