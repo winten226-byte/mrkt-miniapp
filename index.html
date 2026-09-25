@@ -2,8 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
   <title>MRKT Sniper Control</title>
   <meta name="theme-color" content="#0b0d12">
@@ -45,10 +44,7 @@
 
     body {
       margin: 0;
-      padding:
-        calc(env(safe-area-inset-top) + 12px)
-        14px
-        calc(env(safe-area-inset-bottom) + 25px);
+      padding: calc(env(safe-area-inset-top) + 20px) 14px calc(env(safe-area-inset-bottom) + 25px);
 
       min-height: 100vh;
 
@@ -1472,10 +1468,14 @@
   tg.ready();
   tg.expand();
 
+  // Включаем полноэкранный режим
+  if (tg.requestFullscreen) {
+    tg.requestFullscreen();
+  }
+
   try {
     tg.setHeaderColor("#0b0d12");
     tg.setBackgroundColor("#0b0d12");
-
     if (tg.setBottomBarColor) {
       tg.setBottomBarColor("#0b0d12");
     }
