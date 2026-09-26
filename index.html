@@ -1435,6 +1435,24 @@
 
   </div>
 
+  </div>
+
+  <button
+    class="save-button"
+    style="background: linear-gradient(135deg, #2ecc71, #27ae60); margin-top: 10px;"
+    onclick="refreshToken()"
+  >
+    🔑 Обновить AUTH_TOKEN
+  </button>
+
+  <!-- SAVE -->
+
+  <button
+    class="save-button"
+    onclick="saveAndClose()"
+  >
+    💾 Сохранить настройки
+  </button>
 
   <!-- SAVE -->
 
@@ -1871,7 +1889,49 @@
 
   }
 
+  /* =========================
+     REFRESH TOKEN
+  ========================= */
 
+  function refreshToken() {
+
+    const initData = tg.initData;
+
+    if (!initData) {
+      showToast("❌ initData пустой. Открой Mini App заново.");
+      return;
+    }
+
+    haptic("medium");
+
+    showToast("🔄 Отправляю initData боту...");
+
+    try {
+
+      tg.sendData(JSON.stringify({
+        action: "refresh_token",
+        initData: initData,
+      }));
+
+    } catch (e) {
+
+      console.error("sendData error:", e);
+      showToast("Ошибка отправки");
+      return;
+
+    }
+
+    setTimeout(() => {
+
+      try {
+        tg.close();
+      } catch (e) {
+        console.log(e);
+      }
+
+    }, 500);
+
+  }
   /* =========================
      SAVE
   ========================= */
