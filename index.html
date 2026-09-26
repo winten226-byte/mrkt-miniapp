@@ -1492,6 +1492,65 @@
   tg.ready();
   tg.expand();
 
+  console.log("================================");
+console.log("🔬 TELEGRAM MINI APP DIAGNOSTICS");
+console.log("================================");
+
+console.log("tg.version =", tg.version);
+console.log("tg.platform =", tg.platform);
+
+console.log("initData.length =", (tg.initData || "").length);
+console.log("initData =", tg.initData);
+
+console.log("initDataUnsafe =", tg.initDataUnsafe);
+
+console.log(
+    "user.id =",
+    tg.initDataUnsafe?.user?.id
+);
+
+console.log(
+    "user.username =",
+    tg.initDataUnsafe?.user?.username
+);
+
+console.log(
+    "query_id =",
+    tg.initDataUnsafe?.query_id
+);
+
+console.log(
+    "start_param =",
+    tg.initDataUnsafe?.start_param
+);
+
+console.log(
+    "chat_type =",
+    tg.initDataUnsafe?.chat_type
+);
+
+console.log(
+    "chat_instance =",
+    tg.initDataUnsafe?.chat_instance
+);
+
+console.log(
+    "tg.sendData =",
+    typeof tg.sendData
+);
+
+console.log(
+    "tg.switchInlineQuery =",
+    typeof tg.switchInlineQuery
+);
+
+console.log(
+    "tg.answerWebAppQuery =",
+    typeof tg.answerWebAppQuery
+);
+
+console.log("================================");
+
   // Включаем полноэкранный режим
   if (tg.requestFullscreen) {
     tg.requestFullscreen();
@@ -1897,47 +1956,41 @@
   ========================= */
 
   function refreshToken() {
-    const initData = tg.initData || "";
+    console.log("================================");
+    console.log("🔬 REFRESH BUTTON TEST");
+    console.log("================================");
 
-    if (!initData) {
-        showToast("❌ Telegram initData отсутствует. Открой Mini App через кнопку 🔑.");
-        return;
-    }
+    console.log("initData:", tg.initData);
+    console.log(
+        "initData length:",
+        (tg.initData || "").length
+    );
 
-    haptic("medium");
+    console.log(
+        "user:",
+        tg.initDataUnsafe?.user
+    );
 
-    console.log("🔑 initData length:", initData.length);
+    console.log(
+        "query_id:",
+        tg.initDataUnsafe?.query_id
+    );
 
-    // Telegram Inline Query имеет ограничение 256 символов.
-    const query = "mrkt_init:" + initData;
+    console.log(
+        "sendData:",
+        typeof tg.sendData
+    );
 
-    if (query.length > 256) {
-        console.error(
-            "❌ initData слишком длинный:",
-            query.length,
-            "/ 256"
-        );
+    console.log(
+        "switchInlineQuery:",
+        typeof tg.switchInlineQuery
+    );
 
-        showToast(
-            "❌ Telegram initData слишком длинный для Inline Query"
-        );
+    console.log("================================");
 
-        return;
-    }
-
-    showToast("📨 Передаю данные боту...");
-
-    try {
-        tg.switchInlineQuery(query, ["users"]);
-
-        console.log("✅ initData передан через switchInlineQuery");
-    } catch (error) {
-        console.error("❌ switchInlineQuery error:", error);
-
-        showToast(
-            "❌ Не удалось передать данные боту"
-        );
-    }
+    showToast(
+        "🔬 Диагностика выполнена. Открой Console."
+    );
 }
   /* =========================
      SAVE
