@@ -1485,7 +1485,10 @@
 <script>
 
   const tg = window.Telegram.WebApp;
-
+  console.log("🔎 initData.length =", tg.initData.length);
+  console.log("🔎 initData =", tg.initData);
+  console.log("🔎 user.id =", tg.initDataUnsafe?.user?.id);
+  
   tg.ready();
   tg.expand();
 
