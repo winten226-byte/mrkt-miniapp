@@ -1083,6 +1083,43 @@
 
           </div>
 
+          <div class="input-box">
+
+            <label class="input-label">
+              Ордер №1, % от флора
+            </label>
+
+            <input
+              class="input"
+              type="number"
+              id="orderDiscount1"
+              value="30"
+              min="1"
+              max="99"
+              step="1"
+            >
+
+          </div>
+
+
+          <div class="input-box">
+
+            <label class="input-label">
+              Ордер №2, % от флора
+            </label>
+
+            <input
+              class="input"
+              type="number"
+              id="orderDiscount2"
+              value="50"
+              min="1"
+              max="99"
+              step="1"
+            >
+
+          </div>
+
         </div>
 
       </div>
@@ -1588,12 +1625,20 @@
           el("minPrice").value
         ) || 0,
 
-
       max_price:
         parseFloat(
           el("maxPrice").value
         ) || 0,
 
+      order_discount_1:
+        parseFloat(
+          el("orderDiscount1").value
+        ) || 30,
+
+      order_discount_2:
+        parseFloat(
+          el("orderDiscount2").value
+        ) || 50,
 
       offer_multiplier:
         parseFloat(
@@ -1701,6 +1746,12 @@
     if (s.max_price != null)
       el("maxPrice").value = s.max_price || "";
 
+    if (s.order_discount_1 != null)
+      el("orderDiscount1").value = s.order_discount_1;
+
+    if (s.order_discount_2 != null)
+      el("orderDiscount2").value = s.order_discount_2;
+
     if (s.offer_multiplier != null)
       el("offerMultiplier").value = s.offer_multiplier;
 
@@ -1785,7 +1836,9 @@
       max_multiplier: 1.02,
       min_price: 0,
       max_price: 0,
-      offer_multiplier: 1.01,
+      order_discount_1: 30,
+      order_discount_2: 50,
+      offer_multiplier: 0.98,
       skip_lucky_buy: true,
       skip_purchase: true,
       skip_withdraw: true,
