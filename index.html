@@ -90,13 +90,13 @@
 
     /* Базовый отступ — для десктопа */
     .header {
-      padding: calc(env(safe-area-inset-top, 0px) + 24px) 4px 20px;
+      padding: calc(env(safe-area-inset-top, 0px) + 24px) 4px 14px;
     }
-    
+
     /* Мобильные — большой отступ под хедер Telegram */
     @media (max-width: 900px) and (pointer: coarse) {
       .header {
-        padding: calc(env(safe-area-inset-top, 0px) + 90px) 4px 20px;
+        padding: calc(env(safe-area-inset-top, 0px) + 90px) 4px 14px;
       }
     }
 
@@ -221,6 +221,94 @@
       margin-top: 2px;
       color: var(--muted);
       font-size: 10px;
+    }
+
+    /* =========================================
+       TABS
+    ========================================= */
+
+    .tabs {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+
+      margin-bottom: 14px;
+      padding: 5px;
+
+      background: rgba(17, 20, 27, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      box-shadow: 0 6px 20px rgba(0,0,0,.35);
+    }
+
+    .tab {
+      appearance: none;
+      border: none;
+
+      padding: 9px 4px;
+
+      border-radius: 10px;
+
+      background: transparent;
+      color: var(--muted);
+
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.15;
+
+      cursor: pointer;
+      user-select: none;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+
+      transition: background .18s, color .18s;
+    }
+
+    .tab .tab-emoji {
+      font-size: 15px;
+    }
+
+    .tab.active {
+      color: #fff;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(36,139,245,.22),
+          rgba(93,90,255,.22)
+        );
+
+      box-shadow:
+        inset 0 0 0 1px rgba(36,139,245,.35);
+    }
+
+    .tab:active {
+      transform: scale(.97);
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+      animation: fadeIn .18s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* SECTION */
@@ -735,6 +823,15 @@
       .input-row {
         flex-direction: column;
       }
+
+      .tab {
+        font-size: 10px;
+        padding: 8px 2px;
+      }
+
+      .tab .tab-emoji {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -806,643 +903,385 @@
   </div>
 
 
-  <!-- AUTOMATION -->
+  <!-- TABS -->
 
-  <div class="section">
+  <div class="tabs" role="tablist">
 
-    <details class="collapsible" open>
+    <button class="tab active" data-tab="auto" role="tab">
+      <span class="tab-emoji">⚙️</span>
+      <span>Авто</span>
+    </button>
 
-      <summary>
-        <span>⚙️ Автоматизация</span>
-        <span class="hint">Основные функции</span>
-      </summary>
+    <button class="tab" data-tab="buy" role="tab">
+      <span class="tab-emoji">🚀</span>
+      <span>Покупка</span>
+    </button>
 
-      <div class="card">
+    <button class="tab" data-tab="offer" role="tab">
+      <span class="tab-emoji">💎</span>
+      <span>Оффер</span>
+    </button>
 
-        <!-- AUTO BUY -->
-
-        <div class="setting">
-
-          <div class="setting-left">
-
-            <div class="setting-icon">
-              🛒
-            </div>
-
-            <div>
-              <div class="setting-title">
-                Авто-покупка
-              </div>
-
-              <div class="setting-desc">
-                Автоматически выкупать подходящие лоты
-              </div>
-            </div>
-
-          </div>
-
-          <label class="switch">
-            <input
-              type="checkbox"
-              id="autoBuy"
-              onchange="updateDashboard()"
-            >
-            <span class="slider"></span>
-          </label>
-
-        </div>
-
-
-        <!-- AUTO OFFER -->
-
-        <div class="setting">
-
-          <div class="setting-left">
-
-            <div class="setting-icon">
-              💎
-            </div>
-
-            <div>
-              <div class="setting-title">
-                Авто-оффер
-              </div>
-
-              <div class="setting-desc">
-                Автоматически выставлять предложения
-              </div>
-            </div>
-
-          </div>
-
-          <label class="switch">
-            <input
-              type="checkbox"
-              id="autoOffer"
-              onchange="updateDashboard()"
-            >
-            <span class="slider"></span>
-          </label>
-
-        </div>
-
-
-        <!-- NOTIFICATIONS -->
-
-        <div class="setting">
-
-          <div class="setting-left">
-
-            <div class="setting-icon">
-              🔔
-            </div>
-
-            <div>
-              <div class="setting-title">
-                Telegram уведомления
-              </div>
-
-              <div class="setting-desc">
-                Отправлять карточки найденных подарков
-              </div>
-            </div>
-
-          </div>
-
-          <label class="switch">
-
-            <input
-              type="checkbox"
-              id="notifications"
-            >
-
-            <span class="slider"></span>
-
-          </label>
-
-        </div>
-
-        <!-- BLACK / ONYX NOTIFICATIONS -->
-        <div class="setting">
-          <div class="setting-left">
-            <div class="setting-icon">🖤</div>
-            <div>
-              <div class="setting-title">Black / Onyx Black уведомления</div>
-              <div class="setting-desc">Отдельный тумблер для чёрных фонов</div>
-            </div>
-          </div>
-          <label class="switch">
-            <input type="checkbox" id="notificationsBlackOnyx">
-            <span class="slider"></span>
-          </label>
-        </div>
-
-
-        <!-- DEDUP -->
-
-        <div class="setting">
-
-          <div class="setting-left">
-
-            <div class="setting-icon">
-              ♻️
-            </div>
-
-            <div>
-              <div class="setting-title">
-                Защита от повторов
-              </div>
-
-              <div class="setting-desc">
-                Не обрабатывать один и тот же лот повторно
-              </div>
-            </div>
-
-          </div>
-
-          <label class="switch">
-
-            <input
-              type="checkbox"
-              id="dedup"
-            >
-
-            <span class="slider"></span>
-
-          </label>
-
-        </div>
-
-      </div>
-    </details>
+    <button class="tab" data-tab="advanced" role="tab">
+      <span class="tab-emoji">🧠</span>
+      <span>Прочее</span>
+    </button>
 
   </div>
 
 
-  <!-- BUY SETTINGS -->
+  <!-- ============================= -->
+  <!-- TAB: АВТОМАТИЗАЦИЯ            -->
+  <!-- ============================= -->
 
-  <div class="section">
+  <div class="tab-panel active" data-panel="auto">
 
-    <details class="collapsible" open>
+    <div class="section">
 
-      <summary>
-        <span>🚀 Настройки покупки</span>
-        <span class="hint">BUY</span>
-      </summary>
+      <details class="collapsible" open>
 
-      <div class="card">
+        <summary>
+          <span>⚙️ Автоматизация</span>
+          <span class="hint">Основные функции</span>
+        </summary>
 
-        <div class="range-card">
+        <div class="card">
 
-          <div class="range-top">
-
-            <div class="range-title">
-              Максимальный множитель к флору
+          <!-- AUTO BUY -->
+          <div class="setting">
+            <div class="setting-left">
+              <div class="setting-icon">🛒</div>
+              <div>
+                <div class="setting-title">Авто-покупка</div>
+                <div class="setting-desc">Автоматически выкупать подходящие лоты</div>
+              </div>
             </div>
-
-            <div
-              class="range-value"
-              id="multiplierValue"
-            >
-              1.02x
-            </div>
-
+            <label class="switch">
+              <input type="checkbox" id="autoBuy" onchange="updateDashboard()">
+              <span class="slider"></span>
+            </label>
           </div>
 
-          <input
-            type="range"
-            id="maxMultiplier"
-            min="0.50"
-            max="1.20"
-            step="0.01"
-            value="1.02"
-            oninput="updateMultiplier()"
-          >
+          <!-- AUTO OFFER -->
+          <div class="setting">
+            <div class="setting-left">
+              <div class="setting-icon">💎</div>
+              <div>
+                <div class="setting-title">Авто-оффер</div>
+                <div class="setting-desc">Автоматически выставлять предложения</div>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="autoOffer" onchange="updateDashboard()">
+              <span class="slider"></span>
+            </label>
+          </div>
 
-          <div class="presets">
+          <!-- NOTIFICATIONS -->
+          <div class="setting">
+            <div class="setting-left">
+              <div class="setting-icon">🔔</div>
+              <div>
+                <div class="setting-title">Telegram уведомления</div>
+                <div class="setting-desc">Отправлять карточки найденных подарков</div>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="notifications">
+              <span class="slider"></span>
+            </label>
+          </div>
 
-            <button
-              class="preset"
-              onclick="setMultiplier(0.95)"
-            >
-              0.95x
-            </button>
+          <!-- BLACK / ONYX -->
+          <div class="setting">
+            <div class="setting-left">
+              <div class="setting-icon">🖤</div>
+              <div>
+                <div class="setting-title">Black / Onyx Black уведомления</div>
+                <div class="setting-desc">Отдельный тумблер для чёрных фонов</div>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="notificationsBlackOnyx">
+              <span class="slider"></span>
+            </label>
+          </div>
 
-            <button
-              class="preset"
-              onclick="setMultiplier(1.00)"
-            >
-              1.00x
-            </button>
-
-            <button
-              class="preset"
-              onclick="setMultiplier(1.02)"
-            >
-              1.02x
-            </button>
-
-            <button
-              class="preset"
-              onclick="setMultiplier(1.05)"
-            >
-              1.05x
-            </button>
-
+          <!-- DEDUP -->
+          <div class="setting">
+            <div class="setting-left">
+              <div class="setting-icon">♻️</div>
+              <div>
+                <div class="setting-title">Защита от повторов</div>
+                <div class="setting-desc">Не обрабатывать один и тот же лот повторно</div>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="dedup">
+              <span class="slider"></span>
+            </label>
           </div>
 
         </div>
+      </details>
+
+    </div>
+
+  </div>
 
 
-        <div class="input-row">
+  <!-- ============================= -->
+  <!-- TAB: ПОКУПКА                  -->
+  <!-- ============================= -->
 
-          <div class="input-box">
+  <div class="tab-panel" data-panel="buy">
 
-            <label class="input-label">
-              Минимальная цена
-            </label>
+    <div class="section">
+
+      <details class="collapsible" open>
+
+        <summary>
+          <span>🚀 Настройки покупки</span>
+          <span class="hint">BUY</span>
+        </summary>
+
+        <div class="card">
+
+          <div class="range-card">
+
+            <div class="range-top">
+              <div class="range-title">Максимальный множитель к флору</div>
+              <div class="range-value" id="multiplierValue">1.02x</div>
+            </div>
 
             <input
-              class="input"
-              type="number"
-              id="minPrice"
-              placeholder="0"
-              min="0"
+              type="range"
+              id="maxMultiplier"
+              min="0.50"
+              max="1.20"
               step="0.01"
+              value="1.02"
+              oninput="updateMultiplier()"
             >
 
-          </div>
-
-
-          <div class="input-box">
-
-            <label class="input-label">
-              Максимальная цена
-            </label>
-
-            <input
-              class="input"
-              type="number"
-              id="maxPrice"
-              placeholder="Без лимита"
-              min="0"
-              step="0.01"
-            >
-
-          </div>
-
-          <div class="input-box">
-
-            <label class="input-label">
-              Ордер №1, % от флора
-            </label>
-
-            <input
-              class="input"
-              type="number"
-              id="orderDiscount1"
-              value="30"
-              min="1"
-              max="99"
-              step="1"
-            >
-
-          </div>
-
-
-          <div class="input-box">
-
-            <label class="input-label">
-              Ордер №2, % от флора
-            </label>
-
-            <input
-              class="input"
-              type="number"
-              id="orderDiscount2"
-              value="50"
-              min="1"
-              max="99"
-              step="1"
-            >
-
-          </div>
-
-        </div>
-
-      </div>
-    </details>
-
-  </div>
-
-
-  <!-- OFFER -->
-
-  <div class="section">
-
-    <details class="collapsible">
-
-      <summary>
-        <span>💎 Настройки офферов</span>
-        <span class="hint">OFFER</span>
-      </summary>
-
-      <div class="card">
-
-        <div class="input-row">
-
-          <div class="input-box">
-
-            <label class="input-label">
-              Множитель оффера
-            </label>
-
-            <input
-              class="input"
-              type="number"
-              id="offerMultiplier"
-              value="1.01"
-              min="0"
-              step="0.01"
-            >
-
-          </div>
-
-        </div>
-
-      </div>
-    </details>
-
-  </div>
-
-
-  <!-- EVENT FILTERS -->
-
-  <div class="section">
-
-    <details class="collapsible">
-
-      <summary>
-        <span>🛡 Фильтр событий</span>
-        <span class="hint">SKIP</span>
-      </summary>
-
-      <div class="card">
-
-        <div class="filters">
-
-          <label class="filter">
-            <input
-              type="checkbox"
-              id="skipLuckyBuy"
-            >
-
-            <span class="filter-text">
-              🍀 Lucky Buy
-            </span>
-          </label>
-
-
-          <label class="filter">
-            <input
-              type="checkbox"
-              id="skipPurchase"
-            >
-
-            <span class="filter-text">
-              🛒 Покупки
-            </span>
-          </label>
-
-
-          <label class="filter">
-            <input
-              type="checkbox"
-              id="skipWithdraw"
-            >
-
-            <span class="filter-text">
-              📤 Вывод
-            </span>
-          </label>
-
-
-          <label class="filter">
-            <input
-              type="checkbox"
-              id="skipRemoveSale"
-            >
-
-            <span class="filter-text">
-              ❌ Снятие с продажи
-            </span>
-          </label>
-
-
-          <label class="filter">
-            <input
-              type="checkbox"
-              id="skipUnlisted"
-            >
-
-            <span class="filter-text">
-              🚫 Unlisted
-            </span>
-          </label>
-
-
-          <label class="filter">
-            <input
-              type="checkbox"
-              id="skipCancelSale"
-            >
-
-            <span class="filter-text">
-              🗑 Cancel Sale
-            </span>
-          </label>
-
-
-          <label class="filter">
-            <input
-              type="checkbox"
-              id="skipSold"
-            >
-
-            <span class="filter-text">
-              🔴 Уже проданные
-            </span>
-          </label>
-
-
-          <label class="filter">
-            <input
-              type="checkbox"
-              id="skipInactive"
-            >
-
-            <span class="filter-text">
-              ⚠️ isOnSale=false
-            </span>
-          </label>
-
-        </div>
-
-      </div>
-    </details>
-
-  </div>
-
-
-  <!-- ADVANCED -->
-
-  <div class="section">
-
-    <details class="collapsible">
-
-      <summary>
-        <span>🧠 Расширенные</span>
-        <span class="hint">POLLING · AUTO-REFRESH</span>
-      </summary>
-
-      <div class="card">
-
-        <div class="input-row">
-
-          <div class="input-box">
-
-            <label class="input-label">
-              Интервал polling, сек
-            </label>
-
-            <input
-              class="input"
-              type="number"
-              id="pollInterval"
-              value="3"
-              min="0.2"
-              step="0.1"
-            >
-
-          </div>
-
-        </div>
-
-
-        <div class="setting">
-
-          <div class="setting-left">
-
-            <div class="setting-icon">
-              🔄
-            </div>
-
-            <div>
-
-              <div class="setting-title">
-                Авто-обновление ордеров
-              </div>
-
-              <div class="setting-desc">
-                Переставлять ордера при изменении флора
-              </div>
-
+            <div class="presets">
+              <button class="preset" onclick="setMultiplier(0.95)">0.95x</button>
+              <button class="preset" onclick="setMultiplier(1.00)">1.00x</button>
+              <button class="preset" onclick="setMultiplier(1.02)">1.02x</button>
+              <button class="preset" onclick="setMultiplier(1.05)">1.05x</button>
             </div>
 
           </div>
 
-          <label class="switch">
+          <div class="input-row">
 
-            <input
-              type="checkbox"
-              id="autoRefreshOrders"
-            >
-
-            <span class="slider"></span>
-
-          </label>
-
-        </div>
-
-
-        <div class="input-row">
-
-          <div class="input-box">
-
-            <label class="input-label">
-              Интервал авто-обновления, сек
-            </label>
-
-            <input
-              class="input"
-              type="number"
-              id="autoRefreshInterval"
-              value="300"
-              min="30"
-              step="10"
-            >
-
-          </div>
-
-        </div>
-
-
-        <div class="setting">
-
-          <div class="setting-left">
-
-            <div class="setting-icon">
-              📳
+            <div class="input-box">
+              <label class="input-label">Минимальная цена</label>
+              <input class="input" type="number" id="minPrice"
+                     placeholder="0" min="0" step="0.01">
             </div>
 
-            <div>
+            <div class="input-box">
+              <label class="input-label">Максимальная цена</label>
+              <input class="input" type="number" id="maxPrice"
+                     placeholder="Без лимита" min="0" step="0.01">
+            </div>
 
-              <div class="setting-title">
-                Haptic Feedback
-              </div>
+            <div class="input-box">
+              <label class="input-label">Ордер №1, % от флора</label>
+              <input class="input" type="number" id="orderDiscount1"
+                     value="30" min="1" max="99" step="1">
+            </div>
 
-              <div class="setting-desc">
-                Вибрация интерфейса Telegram
-              </div>
-
+            <div class="input-box">
+              <label class="input-label">Ордер №2, % от флора</label>
+              <input class="input" type="number" id="orderDiscount2"
+                     value="50" min="1" max="99" step="1">
             </div>
 
           </div>
 
-          <label class="switch">
-
-            <input
-              type="checkbox"
-              id="haptic"
-            >
-
-            <span class="slider"></span>
-
-          </label>
-
         </div>
+      </details>
 
-      </div>
-    </details>
+    </div>
 
   </div>
 
 
-  <!-- BUTTONS -->
+  <!-- ============================= -->
+  <!-- TAB: ОФФЕР + ФИЛЬТРЫ          -->
+  <!-- ============================= -->
+
+  <div class="tab-panel" data-panel="offer">
+
+    <!-- OFFER -->
+    <div class="section">
+
+      <details class="collapsible" open>
+
+        <summary>
+          <span>💎 Настройки офферов</span>
+          <span class="hint">OFFER</span>
+        </summary>
+
+        <div class="card">
+
+          <div class="input-row">
+            <div class="input-box">
+              <label class="input-label">Множитель оффера</label>
+              <input class="input" type="number" id="offerMultiplier"
+                     value="1.01" min="0" step="0.01">
+            </div>
+          </div>
+
+        </div>
+      </details>
+
+    </div>
+
+    <!-- EVENT FILTERS -->
+    <div class="section">
+
+      <details class="collapsible" open>
+
+        <summary>
+          <span>🛡 Фильтр событий</span>
+          <span class="hint">SKIP</span>
+        </summary>
+
+        <div class="card">
+
+          <div class="filters">
+
+            <label class="filter">
+              <input type="checkbox" id="skipLuckyBuy">
+              <span class="filter-text">🍀 Lucky Buy</span>
+            </label>
+
+            <label class="filter">
+              <input type="checkbox" id="skipPurchase">
+              <span class="filter-text">🛒 Покупки</span>
+            </label>
+
+            <label class="filter">
+              <input type="checkbox" id="skipWithdraw">
+              <span class="filter-text">📤 Вывод</span>
+            </label>
+
+            <label class="filter">
+              <input type="checkbox" id="skipRemoveSale">
+              <span class="filter-text">❌ Снятие с продажи</span>
+            </label>
+
+            <label class="filter">
+              <input type="checkbox" id="skipUnlisted">
+              <span class="filter-text">🚫 Unlisted</span>
+            </label>
+
+            <label class="filter">
+              <input type="checkbox" id="skipCancelSale">
+              <span class="filter-text">🗑 Cancel Sale</span>
+            </label>
+
+            <label class="filter">
+              <input type="checkbox" id="skipSold">
+              <span class="filter-text">🔴 Уже проданные</span>
+            </label>
+
+            <label class="filter">
+              <input type="checkbox" id="skipInactive">
+              <span class="filter-text">⚠️ isOnSale=false</span>
+            </label>
+
+          </div>
+
+        </div>
+      </details>
+
+    </div>
+
+  </div>
+
+
+  <!-- ============================= -->
+  <!-- TAB: ПРОЧЕЕ                   -->
+  <!-- ============================= -->
+
+  <div class="tab-panel" data-panel="advanced">
+
+    <div class="section">
+
+      <details class="collapsible" open>
+
+        <summary>
+          <span>🧠 Расширенные</span>
+          <span class="hint">POLLING · AUTO-REFRESH</span>
+        </summary>
+
+        <div class="card">
+
+          <div class="input-row">
+            <div class="input-box">
+              <label class="input-label">Интервал polling, сек</label>
+              <input class="input" type="number" id="pollInterval"
+                     value="3" min="0.2" step="0.1">
+            </div>
+          </div>
+
+          <div class="setting">
+            <div class="setting-left">
+              <div class="setting-icon">🔄</div>
+              <div>
+                <div class="setting-title">Авто-обновление ордеров</div>
+                <div class="setting-desc">Переставлять ордера при изменении флора</div>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="autoRefreshOrders">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="input-row">
+            <div class="input-box">
+              <label class="input-label">Интервал авто-обновления, сек</label>
+              <input class="input" type="number" id="autoRefreshInterval"
+                     value="300" min="30" step="10">
+            </div>
+          </div>
+
+          <div class="setting">
+            <div class="setting-left">
+              <div class="setting-icon">📳</div>
+              <div>
+                <div class="setting-title">Haptic Feedback</div>
+                <div class="setting-desc">Вибрация интерфейса Telegram</div>
+              </div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="haptic">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+        </div>
+      </details>
+
+    </div>
+
+  </div>
+
+
+  <!-- BUTTONS (видны всегда) -->
 
   <div class="buttons">
 
-    <button
-      class="button button-secondary"
-      onclick="resetSettings()"
-    >
+    <button class="button button-secondary" onclick="resetSettings()">
       ↩️ Сбросить
     </button>
 
-    <button
-      class="button button-secondary"
-      onclick="testHaptic()"
-    >
+    <button class="button button-secondary" onclick="testHaptic()">
       📳 Тест вибрации
     </button>
 
@@ -1451,16 +1290,13 @@
 
   <!-- SAVE -->
 
-  <button
-    class="save-button"
-    onclick="saveAndClose()"
-  >
+  <button class="save-button" onclick="saveAndClose()">
     💾 Сохранить настройки
   </button>
 
 
   <div class="footer">
-    MRKT Sniper Control v2.1<br>
+    MRKT Sniper Control v2.2<br>
     Настройки передаются боту через Telegram WebApp
   </div>
 
@@ -1469,10 +1305,7 @@
 
 <!-- TOAST -->
 
-<div
-  class="toast"
-  id="toast"
->
+<div class="toast" id="toast">
   Настройки сохранены
 </div>
 
@@ -1490,7 +1323,6 @@
   // и вернуть его в окошко невозможно.
   // ---------------------------------------------------------
   const isDesktop = (() => {
-    // 1) Сам Telegram знает платформу
     const platform = (tg.platform || "").toLowerCase();
     if (platform === "tdesktop" || platform === "web" ||
         platform === "macos" || platform === "weba") {
@@ -1500,7 +1332,6 @@
       return false;
     }
 
-    // 2) Fallback: определяем по user-agent / размеру экрана
     const ua = navigator.userAgent || "";
     const uaDesktop = /Windows|Macintosh|Linux|X11/i.test(ua) &&
                       !/Android|iPhone|iPad|iPod/i.test(ua);
@@ -1536,45 +1367,69 @@
     return document.getElementById(id);
   }
 
-
   function showToast(text) {
-
     const toast = el("toast");
-
     toast.textContent = text;
-
     toast.classList.add("show");
-
     setTimeout(() => {
       toast.classList.remove("show");
     }, 1800);
-
   }
 
-
   function haptic(type = "light") {
-
     const enabled = el("haptic")?.checked;
-
-    if (!enabled) {
-      return;
-    }
+    if (!enabled) return;
 
     try {
-
-      if (
-        tg.HapticFeedback &&
-        tg.HapticFeedback.impactOccurred
-      ) {
-
+      if (tg.HapticFeedback && tg.HapticFeedback.impactOccurred) {
         tg.HapticFeedback.impactOccurred(type);
-
       }
-
     } catch (e) {
       console.log(e);
     }
+  }
 
+
+  /* =========================
+     TABS
+  ========================= */
+
+  const TABS_STORAGE_KEY = "mrkt_sniper_active_tab";
+
+  function switchTab(name) {
+    document.querySelectorAll(".tab").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.tab === name);
+    });
+
+    document.querySelectorAll(".tab-panel").forEach(panel => {
+      panel.classList.toggle("active", panel.dataset.panel === name);
+    });
+
+    try {
+      localStorage.setItem(TABS_STORAGE_KEY, name);
+    } catch (e) { /* ignore */ }
+
+    // Скроллим к верху контента
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }
+
+  function initTabs() {
+    document.querySelectorAll(".tab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        haptic("light");
+        switchTab(btn.dataset.tab);
+      });
+    });
+
+    let initial = "auto";
+    try {
+      const saved = localStorage.getItem(TABS_STORAGE_KEY);
+      if (saved && document.querySelector(`.tab[data-tab="${saved}"]`)) {
+        initial = saved;
+      }
+    } catch (e) { /* ignore */ }
+
+    switchTab(initial);
   }
 
 
@@ -1583,16 +1438,11 @@
   ========================= */
 
   function updateDashboard() {
-
     const buy = el("autoBuy").checked;
     const offer = el("autoOffer").checked;
 
-    el("dashboardBuy").textContent =
-      buy ? "ON" : "OFF";
-
-    el("dashboardOffer").textContent =
-      offer ? "ON" : "OFF";
-
+    el("dashboardBuy").textContent = buy ? "ON" : "OFF";
+    el("dashboardOffer").textContent = offer ? "ON" : "OFF";
   }
 
 
@@ -1601,24 +1451,14 @@
   ========================= */
 
   function updateMultiplier() {
-
-    const value =
-      parseFloat(el("maxMultiplier").value);
-
-    el("multiplierValue").textContent =
-      value.toFixed(2) + "x";
-
+    const value = parseFloat(el("maxMultiplier").value);
+    el("multiplierValue").textContent = value.toFixed(2) + "x";
   }
 
-
   function setMultiplier(value) {
-
     el("maxMultiplier").value = value;
-
     updateMultiplier();
-
     haptic("light");
-
   }
 
 
@@ -1626,234 +1466,85 @@
      LOCAL STORAGE
   ========================= */
 
-  const STORAGE_KEY =
-    "mrkt_sniper_settings_v3";
-
+  const STORAGE_KEY = "mrkt_sniper_settings_v3";
 
   function collectSettings() {
-
     return {
+      auto_buy: el("autoBuy").checked,
+      auto_offer: el("autoOffer").checked,
+      notifications: el("notifications").checked,
+      notifications_black_onyx: el("notificationsBlackOnyx").checked,
+      dedup: el("dedup").checked,
 
-      auto_buy:
-        el("autoBuy").checked,
+      max_multiplier: parseFloat(el("maxMultiplier").value) || 1.02,
+      min_price: parseFloat(el("minPrice").value) || 0,
+      max_price: parseFloat(el("maxPrice").value) || 0,
+      order_discount_1: parseFloat(el("orderDiscount1").value) || 30,
+      order_discount_2: parseFloat(el("orderDiscount2").value) || 50,
+      offer_multiplier: parseFloat(el("offerMultiplier").value) || 1.01,
 
-      auto_offer:
-        el("autoOffer").checked,
+      skip_lucky_buy: el("skipLuckyBuy").checked,
+      skip_purchase: el("skipPurchase").checked,
+      skip_withdraw: el("skipWithdraw").checked,
+      skip_remove_sale: el("skipRemoveSale").checked,
+      skip_unlisted: el("skipUnlisted").checked,
+      skip_cancel_sale: el("skipCancelSale").checked,
+      skip_sold: el("skipSold").checked,
+      skip_inactive: el("skipInactive").checked,
 
-      notifications:
-        el("notifications").checked,
-
-      notifications_black_onyx:
-        el("notificationsBlackOnyx").checked,
-
-      dedup:
-        el("dedup").checked,
-
-
-      max_multiplier:
-        parseFloat(
-          el("maxMultiplier").value
-        ) || 1.02,
-
-
-      min_price:
-        parseFloat(
-          el("minPrice").value
-        ) || 0,
-
-      max_price:
-        parseFloat(
-          el("maxPrice").value
-        ) || 0,
-
-      order_discount_1:
-        parseFloat(
-          el("orderDiscount1").value
-        ) || 30,
-
-      order_discount_2:
-        parseFloat(
-          el("orderDiscount2").value
-        ) || 50,
-
-      offer_multiplier:
-        parseFloat(
-          el("offerMultiplier").value
-        ) || 1.01,
-
-
-      skip_lucky_buy:
-        el("skipLuckyBuy").checked,
-
-      skip_purchase:
-        el("skipPurchase").checked,
-
-      skip_withdraw:
-        el("skipWithdraw").checked,
-
-      skip_remove_sale:
-        el("skipRemoveSale").checked,
-
-      skip_unlisted:
-        el("skipUnlisted").checked,
-
-      skip_cancel_sale:
-        el("skipCancelSale").checked,
-
-      skip_sold:
-        el("skipSold").checked,
-
-      skip_inactive:
-        el("skipInactive").checked,
-
-
-      poll_interval:
-        parseFloat(
-          el("pollInterval").value
-        ) || 3,
-
-
-      auto_refresh_orders:
-        el("autoRefreshOrders").checked,
-
-
-      auto_refresh_interval:
-        parseFloat(
-          el("autoRefreshInterval").value
-        ) || 300,
-
-
-      haptic:
-        el("haptic").checked
-
+      poll_interval: parseFloat(el("pollInterval").value) || 3,
+      auto_refresh_orders: el("autoRefreshOrders").checked,
+      auto_refresh_interval: parseFloat(el("autoRefreshInterval").value) || 300,
+      haptic: el("haptic").checked
     };
-
   }
-
 
   function saveLocal() {
-
-    const settings =
-      collectSettings();
-
+    const settings = collectSettings();
     try {
-
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(settings)
-      );
-
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
     } catch (e) {
-
-      console.log(
-        "localStorage error:",
-        e
-      );
-
+      console.log("localStorage error:", e);
     }
-
   }
-
 
   function applySettings(s) {
+    if (typeof s.auto_buy === "boolean") el("autoBuy").checked = s.auto_buy;
+    if (typeof s.auto_offer === "boolean") el("autoOffer").checked = s.auto_offer;
+    if (typeof s.notifications === "boolean") el("notifications").checked = s.notifications;
+    if (typeof s.notifications_black_onyx === "boolean") el("notificationsBlackOnyx").checked = s.notifications_black_onyx;
+    if (typeof s.dedup === "boolean") el("dedup").checked = s.dedup;
 
-    if (typeof s.auto_buy === "boolean")
-      el("autoBuy").checked = s.auto_buy;
+    if (s.max_multiplier != null) el("maxMultiplier").value = s.max_multiplier;
+    if (s.min_price != null) el("minPrice").value = s.min_price || "";
+    if (s.max_price != null) el("maxPrice").value = s.max_price || "";
+    if (s.order_discount_1 != null) el("orderDiscount1").value = s.order_discount_1;
+    if (s.order_discount_2 != null) el("orderDiscount2").value = s.order_discount_2;
+    if (s.offer_multiplier != null) el("offerMultiplier").value = s.offer_multiplier;
 
-    if (typeof s.auto_offer === "boolean")
-      el("autoOffer").checked = s.auto_offer;
+    if (typeof s.skip_lucky_buy === "boolean") el("skipLuckyBuy").checked = s.skip_lucky_buy;
+    if (typeof s.skip_purchase === "boolean") el("skipPurchase").checked = s.skip_purchase;
+    if (typeof s.skip_withdraw === "boolean") el("skipWithdraw").checked = s.skip_withdraw;
+    if (typeof s.skip_remove_sale === "boolean") el("skipRemoveSale").checked = s.skip_remove_sale;
+    if (typeof s.skip_unlisted === "boolean") el("skipUnlisted").checked = s.skip_unlisted;
+    if (typeof s.skip_cancel_sale === "boolean") el("skipCancelSale").checked = s.skip_cancel_sale;
+    if (typeof s.skip_sold === "boolean") el("skipSold").checked = s.skip_sold;
+    if (typeof s.skip_inactive === "boolean") el("skipInactive").checked = s.skip_inactive;
 
-    if (typeof s.notifications === "boolean")
-      el("notifications").checked = s.notifications;
-
-    if (typeof s.notifications_black_onyx === "boolean")
-      el("notificationsBlackOnyx").checked = s.notifications_black_onyx;
-
-    if (typeof s.dedup === "boolean")
-      el("dedup").checked = s.dedup;
-
-
-    if (s.max_multiplier != null)
-      el("maxMultiplier").value = s.max_multiplier;
-
-    if (s.min_price != null)
-      el("minPrice").value = s.min_price || "";
-
-    if (s.max_price != null)
-      el("maxPrice").value = s.max_price || "";
-
-    if (s.order_discount_1 != null)
-      el("orderDiscount1").value = s.order_discount_1;
-
-    if (s.order_discount_2 != null)
-      el("orderDiscount2").value = s.order_discount_2;
-
-    if (s.offer_multiplier != null)
-      el("offerMultiplier").value = s.offer_multiplier;
-
-
-    if (typeof s.skip_lucky_buy === "boolean")
-      el("skipLuckyBuy").checked = s.skip_lucky_buy;
-
-    if (typeof s.skip_purchase === "boolean")
-      el("skipPurchase").checked = s.skip_purchase;
-
-    if (typeof s.skip_withdraw === "boolean")
-      el("skipWithdraw").checked = s.skip_withdraw;
-
-    if (typeof s.skip_remove_sale === "boolean")
-      el("skipRemoveSale").checked = s.skip_remove_sale;
-
-    if (typeof s.skip_unlisted === "boolean")
-      el("skipUnlisted").checked = s.skip_unlisted;
-
-    if (typeof s.skip_cancel_sale === "boolean")
-      el("skipCancelSale").checked = s.skip_cancel_sale;
-
-    if (typeof s.skip_sold === "boolean")
-      el("skipSold").checked = s.skip_sold;
-
-    if (typeof s.skip_inactive === "boolean")
-      el("skipInactive").checked = s.skip_inactive;
-
-
-    if (s.poll_interval != null)
-      el("pollInterval").value = s.poll_interval;
-
-    if (typeof s.auto_refresh_orders === "boolean")
-      el("autoRefreshOrders").checked = s.auto_refresh_orders;
-
-    if (s.auto_refresh_interval != null)
-      el("autoRefreshInterval").value = s.auto_refresh_interval;
-
-    if (typeof s.haptic === "boolean")
-      el("haptic").checked = s.haptic;
-
+    if (s.poll_interval != null) el("pollInterval").value = s.poll_interval;
+    if (typeof s.auto_refresh_orders === "boolean") el("autoRefreshOrders").checked = s.auto_refresh_orders;
+    if (s.auto_refresh_interval != null) el("autoRefreshInterval").value = s.auto_refresh_interval;
+    if (typeof s.haptic === "boolean") el("haptic").checked = s.haptic;
   }
 
-
   function loadLocal() {
-
     try {
-
-      const raw =
-        localStorage.getItem(STORAGE_KEY);
-
-      if (!raw) {
-        return;
-      }
-
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
       applySettings(JSON.parse(raw));
-
     } catch (e) {
-
-      console.log(
-        "load settings error:",
-        e
-      );
-
+      console.log("load settings error:", e);
     }
-
   }
 
 
@@ -1862,7 +1553,6 @@
   ========================= */
 
   function resetSettings() {
-
     applySettings({
       auto_buy: false,
       auto_offer: false,
@@ -1895,9 +1585,7 @@
     localStorage.removeItem(STORAGE_KEY);
 
     haptic("medium");
-
     showToast("Настройки сброшены");
-
   }
 
 
@@ -1906,26 +1594,14 @@
   ========================= */
 
   function testHaptic() {
-
     try {
-
-      if (
-        tg.HapticFeedback &&
-        tg.HapticFeedback.notificationOccurred
-      ) {
-
-        tg.HapticFeedback.notificationOccurred(
-          "success"
-        );
-
+      if (tg.HapticFeedback && tg.HapticFeedback.notificationOccurred) {
+        tg.HapticFeedback.notificationOccurred("success");
       }
-
     } catch (e) {
       console.log(e);
     }
-
     showToast("📳 Вибрация отправлена");
-
   }
 
 
@@ -1934,42 +1610,20 @@
   ========================= */
 
   function saveAndClose() {
-
     const settings = collectSettings();
-
     saveLocal();
-
     haptic("medium");
-
     showToast("Настройки сохранены");
 
-
     try {
-
-      tg.sendData(
-        JSON.stringify(settings)
-      );
-
+      tg.sendData(JSON.stringify(settings));
     } catch (e) {
-
-      console.error(
-        "Telegram sendData error:",
-        e
-      );
-
+      console.error("Telegram sendData error:", e);
     }
 
-
     setTimeout(() => {
-
-      try {
-        tg.close();
-      } catch (e) {
-        console.log(e);
-      }
-
+      try { tg.close(); } catch (e) { console.log(e); }
     }, 500);
-
   }
 
 
@@ -1978,24 +1632,18 @@
   ========================= */
 
   function restoreCollapsibleState() {
-
     document
       .querySelectorAll("details.collapsible")
       .forEach((det, idx) => {
-
         const key = "mrkt_details_" + idx;
-
         const saved = localStorage.getItem(key);
-
         if (saved === "1") det.open = true;
         if (saved === "0") det.open = false;
 
         det.addEventListener("toggle", () => {
           localStorage.setItem(key, det.open ? "1" : "0");
         });
-
       });
-
   }
 
 
@@ -2007,13 +1655,8 @@
   const encoded = urlParams.get("s");
 
   if (encoded) {
-
     try {
-
-      let b64 = encoded
-        .replace(/-/g, "+")
-        .replace(/_/g, "/");
-
+      let b64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
       while (b64.length % 4) b64 += "=";
 
       const decoded = JSON.parse(
@@ -2021,42 +1664,29 @@
       );
 
       applySettings(decoded);
-
       console.log("✅ Настройки загружены из бота");
-
     } catch (e) {
-
       console.error("Ошибка URL-настроек:", e);
       loadLocal();
-
     }
-
   } else {
-
     loadLocal();
-
   }
 
   updateMultiplier();
   updateDashboard();
   restoreCollapsibleState();
+  initTabs();
 
 
-  /*
-    Автосохранение при изменении.
-  */
+  /* Автосохранение при изменении */
 
   document
     .querySelectorAll("input")
     .forEach(input => {
-
-      input.addEventListener(
-        "change",
-        () => {
-          saveLocal();
-        }
-      );
-
+      input.addEventListener("change", () => {
+        saveLocal();
+      });
     });
 
 </script>
