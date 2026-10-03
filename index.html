@@ -1476,9 +1476,37 @@
   tg.ready();
   tg.expand();
 
-  // Включаем полноэкранный режим
-  if (tg.requestFullscreen) {
-    tg.requestFullscreen();
+  // ---------------------------------------------------------
+  // Fullscreen только на мобильных.
+  // На ПК Telegram разворачивает WebApp на весь экран,
+  // и вернуть его в окошко невозможно.
+  // ---------------------------------------------------------
+  const isDesktop = (() => {
+    // 1) Сам Telegram знает платформу
+    const platform = (tg.platform || "").toLowerCase();
+    if (platform === "tdesktop" || platform === "web" ||
+        platform === "macos" || platform === "weba") {
+      return true;
+    }
+    if (platform === "ios" || platform === "android") {
+      return false;
+    }
+
+    // 2) Fallback: определяем по user-agent / размеру экрана
+    const ua = navigator.userAgent || "";
+    const uaDesktop = /Windows|Macintosh|Linux|X11/i.test(ua) &&
+                      !/Android|iPhone|iPad|iPod/i.test(ua);
+    const wideScreen = window.innerWidth >= 900;
+
+    return uaDesktop || wideScreen;
+  })();
+
+  if (!isDesktop && typeof tg.requestFullscreen === "function") {
+    try {
+      tg.requestFullscreen();
+    } catch (e) {
+      console.log("fullscreen error:", e);
+    }
   }
 
   try {
