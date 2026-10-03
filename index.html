@@ -88,8 +88,16 @@
 
     /* HEADER */
 
+    /* Базовый отступ — для десктопа */
     .header {
-      padding: calc(env(safe-area-inset-top) + 90px) 4px 20px;
+      padding: calc(env(safe-area-inset-top, 0px) + 24px) 4px 20px;
+    }
+    
+    /* Мобильные — большой отступ под хедер Telegram */
+    @media (max-width: 900px) and (pointer: coarse) {
+      .header {
+        padding: calc(env(safe-area-inset-top, 0px) + 90px) 4px 20px;
+      }
     }
 
     .header-top {
