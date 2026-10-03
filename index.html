@@ -5,7 +5,7 @@
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 
-  <title>MRKT Sniper Control</title>
+  <title>TKRM Bot</title>
   <meta name="theme-color" content="#0b0d12">
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -88,12 +88,10 @@
 
     /* HEADER */
 
-    /* Базовый отступ — для десктопа */
     .header {
       padding: calc(env(safe-area-inset-top, 0px) + 24px) 4px 14px;
     }
 
-    /* Мобильные — большой отступ под хедер Telegram */
     @media (max-width: 900px) and (pointer: coarse) {
       .header {
         padding: calc(env(safe-area-inset-top, 0px) + 90px) 4px 14px;
@@ -315,6 +313,29 @@
 
     .section {
       margin-bottom: 14px;
+    }
+
+    /* GROUP TITLE (бывший summary) */
+
+    .group-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 15px 14px;
+
+      color: #e8ebf1;
+
+      font-size: 13px;
+      font-weight: 800;
+
+      user-select: none;
+    }
+
+    .group-title .hint {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 500;
     }
 
     /* CARD */
@@ -610,9 +631,9 @@
       font-weight: 600;
     }
 
-    /* COLLAPSIBLE SECTION */
+    /* CARD (бывший collapsible) */
 
-    .collapsible {
+    .card-block {
       overflow: hidden;
 
       border-radius: var(--radius);
@@ -622,58 +643,15 @@
       box-shadow: var(--shadow);
     }
 
-    .collapsible > summary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 15px 14px;
-
-      cursor: pointer;
-
-      color: #e8ebf1;
-
-      font-size: 13px;
-      font-weight: 800;
-
-      list-style: none;
-      user-select: none;
+    .card-block .group-title {
+      border-bottom: 1px solid var(--border);
     }
 
-    .collapsible > summary::-webkit-details-marker {
-      display: none;
-    }
-
-    .collapsible > summary .hint {
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 500;
-      margin-left: auto;
-      margin-right: 12px;
-    }
-
-    .collapsible > summary::after {
-      content: "⌄";
-
-      color: var(--muted);
-
-      font-size: 14px;
-
-      transition: .2s;
-
-      flex: 0 0 auto;
-    }
-
-    .collapsible[open] > summary::after {
-      transform: rotate(180deg);
-    }
-
-    .collapsible .card {
+    .card-block .card {
       border: none;
       border-radius: 0;
       box-shadow: none;
       background: transparent;
-      border-top: 1px solid var(--border);
       padding: 0;
     }
 
@@ -854,7 +832,7 @@
 
         <div>
           <div class="title">
-            MRKT Sniper
+            TKRM Bot
           </div>
 
           <div class="subtitle">
@@ -938,12 +916,12 @@
 
     <div class="section">
 
-      <details class="collapsible" open>
+      <div class="card-block">
 
-        <summary>
+        <div class="group-title">
           <span>⚙️ Автоматизация</span>
           <span class="hint">Основные функции</span>
-        </summary>
+        </div>
 
         <div class="card">
 
@@ -1023,7 +1001,8 @@
           </div>
 
         </div>
-      </details>
+
+      </div>
 
     </div>
 
@@ -1038,12 +1017,12 @@
 
     <div class="section">
 
-      <details class="collapsible" open>
+      <div class="card-block">
 
-        <summary>
+        <div class="group-title">
           <span>🚀 Настройки покупки</span>
           <span class="hint">BUY</span>
-        </summary>
+        </div>
 
         <div class="card">
 
@@ -1102,7 +1081,8 @@
           </div>
 
         </div>
-      </details>
+
+      </div>
 
     </div>
 
@@ -1118,12 +1098,12 @@
     <!-- OFFER -->
     <div class="section">
 
-      <details class="collapsible" open>
+      <div class="card-block">
 
-        <summary>
+        <div class="group-title">
           <span>💎 Настройки офферов</span>
           <span class="hint">OFFER</span>
-        </summary>
+        </div>
 
         <div class="card">
 
@@ -1136,19 +1116,20 @@
           </div>
 
         </div>
-      </details>
+
+      </div>
 
     </div>
 
     <!-- EVENT FILTERS -->
     <div class="section">
 
-      <details class="collapsible" open>
+      <div class="card-block">
 
-        <summary>
+        <div class="group-title">
           <span>🛡 Фильтр событий</span>
           <span class="hint">SKIP</span>
-        </summary>
+        </div>
 
         <div class="card">
 
@@ -1197,7 +1178,8 @@
           </div>
 
         </div>
-      </details>
+
+      </div>
 
     </div>
 
@@ -1212,12 +1194,12 @@
 
     <div class="section">
 
-      <details class="collapsible" open>
+      <div class="card-block">
 
-        <summary>
+        <div class="group-title">
           <span>🧠 Расширенные</span>
           <span class="hint">POLLING · AUTO-REFRESH</span>
-        </summary>
+        </div>
 
         <div class="card">
 
@@ -1266,7 +1248,8 @@
           </div>
 
         </div>
-      </details>
+
+      </div>
 
     </div>
 
@@ -1296,7 +1279,7 @@
 
 
   <div class="footer">
-    MRKT Sniper Control v2.2<br>
+    TKRM Bot v2.2<br>
     Настройки передаются боту через Telegram WebApp
   </div>
 
@@ -1317,11 +1300,7 @@
   tg.ready();
   tg.expand();
 
-  // ---------------------------------------------------------
-  // Fullscreen только на мобильных.
-  // На ПК Telegram разворачивает WebApp на весь экран,
-  // и вернуть его в окошко невозможно.
-  // ---------------------------------------------------------
+  // Fullscreen только на мобильных
   const isDesktop = (() => {
     const platform = (tg.platform || "").toLowerCase();
     if (platform === "tdesktop" || platform === "web" ||
@@ -1409,7 +1388,6 @@
       localStorage.setItem(TABS_STORAGE_KEY, name);
     } catch (e) { /* ignore */ }
 
-    // Скроллим к верху контента
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
   }
 
@@ -1628,26 +1606,6 @@
 
 
   /* =========================
-     COLLAPSIBLE STATE
-  ========================= */
-
-  function restoreCollapsibleState() {
-    document
-      .querySelectorAll("details.collapsible")
-      .forEach((det, idx) => {
-        const key = "mrkt_details_" + idx;
-        const saved = localStorage.getItem(key);
-        if (saved === "1") det.open = true;
-        if (saved === "0") det.open = false;
-
-        det.addEventListener("toggle", () => {
-          localStorage.setItem(key, det.open ? "1" : "0");
-        });
-      });
-  }
-
-
-  /* =========================
      INIT
   ========================= */
 
@@ -1675,7 +1633,6 @@
 
   updateMultiplier();
   updateDashboard();
-  restoreCollapsibleState();
   initTabs();
 
 
